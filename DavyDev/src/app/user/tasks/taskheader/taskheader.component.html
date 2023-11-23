@@ -1,0 +1,16 @@
+<div class="taskheader">
+    <div>
+        <h3>tasks</h3>
+        <button class="addBtn " (click)="open=true" *ngIf="!open; else closed">+</button>
+            
+        <ng-template #closed>
+            <button class="addBtn " (click)="open=false">X</button>
+        </ng-template>
+    </div>
+    <div class="addInput" *ngIf="open">
+        <input #child type="text" (keyup.enter)="addTask(child.value)" class="addText">
+        
+            <button class="save" (click)="addTask(child.value)">Save</button>
+        
+    </div>
+</div>

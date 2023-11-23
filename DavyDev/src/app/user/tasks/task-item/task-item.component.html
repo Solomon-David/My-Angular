@@ -1,0 +1,13 @@
+<div class="taskitem">
+    <p class="num">{{index+1}}</p>
+    <p class="task" *ngIf="!edit;  else text">{{task}}</p>
+    
+    <ng-template #text>
+        <input [value]="task" #taskedit (blur)="toggleEdit()" (keyup.enter)="toggleEdit()"/>
+    </ng-template>
+    <div class="options">
+        <input #input type="checkbox" (change)="change()"  >
+        <button (click)="toggleEdit()">Edit</button>
+        <button class="close" (click)="removeSelf()">X</button>
+    </div>
+</div>

@@ -1,0 +1,7 @@
+@import url("/src/app/shared/styles/main.css");
+
+
+
+input{
+    width: unset;
+}

@@ -1,0 +1,73 @@
+
+   
+    <div><h1>Welcome To The {{title1}}</h1></div>
+ 
+    <div>
+
+        <div id="buttons">
+            <button (click)="toLogin()" [switchclass]="login" truthy="activeButton" falsy="button" >Login</button>
+            <button (click)="toSignUp()"  [switchclass]="!login" truthy="activeButton" falsy="button">Sign Up</button>
+
+        </div>
+        
+
+        <form [formGroup]="userLogin" (ngSubmit)="LoginUser()" *ngIf="login; else signup" id="login">
+           <fieldset >
+               <label>Username:</label>
+               
+               <input name='username' formControlName="username" />
+            </fieldset>
+                   
+                <fieldset>
+                    <label>Password:</label>
+                    
+                    <input type="password" name='password' formControlName="password"/>
+                </fieldset>    
+                
+        <input type="submit">
+        </form>
+        <ng-template #signup>
+            <form [formGroup]="userSignUp" (ngSubmit)="SignUpUser()" id="signup">
+           
+                <fieldset>
+
+                    <label>First Name:</label>
+                    
+                    <input formControlName='firstname'/>
+                </fieldset>
+                <fieldset>
+                    <label>Last Name:</label>
+                    
+                    <input formControlName='lastname'/>
+                </fieldset>
+                <fieldset>
+                    <label>Username</label>
+                    
+                    <input formControlName='username'/>
+                </fieldset>
+                <fieldset>
+                    <label>E-mail:</label>
+                    
+                    <input type="email" formControlName='email'/>
+                </fieldset>
+                <fieldset>
+                    <label>Password:</label>
+                    
+                    <input type="password" formControlName='password'/>
+                </fieldset>
+                <fieldset>
+                    <label>Confirm Password:</label>
+                    
+                    <input type="password" formControlName='confirm'/>
+                </fieldset>
+           
+        
+            
+            <input type="submit"/>
+            </form>
+        </ng-template>
+         
+
+        <pre>{{message}}</pre>
+    </div>
+

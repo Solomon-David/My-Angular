@@ -1,0 +1,26 @@
+<section class="search">
+    <div class="searchtools">
+        <input type="text" (keyup.enter)="search()" placeholder="find task" [(ngModel)]="queryText" />
+        <button id="search" (click)="search()">Search</button>
+    </div>
+    <div class="filter">
+        <button id="filterbtn" [@fade]="!showFilter" (click)="switch()">Filter</button>
+        <form class="filterForm" [@shrink]="showFilter">
+            
+                <fieldset>
+                    <label for="all">all</label>
+                    <input (change)="filterTasks($event)" id="all" type="radio" checked value="all" name="radio" />
+                </fieldset>
+                <fieldset>
+                    <label for="done">done</label>
+                    <input (change)="filterTasks($event)" id="done" type="radio" value="done" name="radio" />
+                </fieldset>
+                <fieldset>
+                    <label for="undone">undone</label>
+                    <input (change)="filterTasks($event)" id="undone" type="radio" value="undone" name="radio" />
+                </fieldset>
+            
+            
+        </form>
+    </div>
+</section> 

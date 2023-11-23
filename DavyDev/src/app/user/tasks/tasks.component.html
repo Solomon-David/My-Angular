@@ -1,0 +1,13 @@
+<div>
+    <main id="card">
+        <task-search (filter)="getFilter($event)" (query)="getQuery($event)"></task-search>
+        <section class="tasks">
+            
+            <taskheader (task)="addTask($event)"></taskheader>
+            <div class="taskbody" >
+                
+                <task-item *ngFor="let task of tasks; let ind=index" (taskChange)="editTask(ind,$event)" [index]="ind" [task]=task.value (doneChange)="toggleDone(ind,$event)" [done]=task.done (kill)="removeTask($event)"></task-item>
+            </div>
+        </section>
+    </main>
+</div>

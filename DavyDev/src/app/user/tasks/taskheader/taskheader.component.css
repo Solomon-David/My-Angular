@@ -1,0 +1,75 @@
+@import url("src/app/shared/styles/main.css");
+
+
+
+.addBtn{
+    width: 50%;
+    display: block;
+    font-size: 2rem;
+    color: var(--primary-color);
+    grid-area: button;
+    height:auto;
+    align-self: center;
+}
+
+.addBtn:active{
+    background-color: var(--primary-color);
+    color:white;
+}
+
+.taskheader{
+    border-bottom: 1px solid grey;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: auto;
+    gap:4% 5%;
+    justify-content:flex-end;
+    align-self: center;
+}
+
+.taskheader div:first-of-type{
+    width:90%;
+    display: grid;
+    grid-template-areas:". name button";
+    gap:5%;
+}
+
+
+
+.taskheader h3{
+    grid-area: name;
+    font-size: 2rem;
+    align-self: center;
+
+}
+
+
+div:has(.addBtn){
+    align-self: center;
+    
+    margin-right:5% ;
+    
+}
+
+.addInput{
+    margin-bottom: 2.5%;
+    width: 50%;
+    flex-direction: column;
+    align-self: center;
+    justify-content: center;
+    display: flex;
+}
+
+.addopts{
+    display: flex;
+    
+    flex-direction: column;
+    gap: 10%;
+    justify-content: center;
+}
+
+.save{
+    margin: auto;
+    justify-self: center;
+}

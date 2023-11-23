@@ -1,0 +1,210 @@
+:root{
+    --primary-color:purple;
+}
+
+app-root{
+    display: block;
+    height: 100%;
+}
+
+app-base, app-user{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-content: center;
+}
+
+app-homepage, app-auth-page {
+    display: grid;
+}
+
+
+
+h1{
+    text-align: center;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    display: block;
+    padding: 0;
+    margin: 0;
+}
+
+
+.colored {
+    color: var(--primary-color);
+}
+
+h1:has(.colored){
+    justify-self: center;
+}
+
+div{
+    position:static;
+    margin:auto 5%;
+}
+
+
+
+a {
+    color:var(--primary-color);
+    background-color: white;
+    
+}
+
+.activeLink {
+    color: white;
+    background-color: var(--primary-color);
+}
+
+table {
+    position:relative;
+    border-radius: 10%;
+    border: 1px solid var(--primary-color);
+    padding:auto;
+    margin:1% auto;
+    
+    
+}
+
+tr {
+    margin:5% 10%;
+    padding:20%;
+}
+
+input[type=submit] {
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    background-color: lightgray;
+    width:auto;
+    margin: 5% auto;
+    
+}
+
+.activeButton {
+    color: white;
+    
+    width:50%;
+    display: inline;
+    position: relative;
+    background-color: transparent;
+}
+
+.button {
+    position: relative;
+    color:  var(--primary-color);
+    background-color: transparent;
+    width:50%;
+    display: inline;
+}
+
+.activeButton::before{
+    --width:100%;
+    content:" ";
+    /* left:calc(100%-var(--width)); */
+    left:0;
+    position: absolute;
+    width: var(--width);
+    height:100%;
+    background-color:var(--primary-color);
+    transition: width 1s;
+    z-index: -1;
+}
+
+.button::before{
+    --width:0%;
+    content:" ";
+    right: 0;
+    position: absolute;
+    width: var(--width);
+    height:100%;
+    background-color: var(--primary-color);
+    transition: width 1s;
+    z-index: -1;
+}
+
+#buttons{
+    margin: 1% 25%;
+}
+
+div:has(#buttons){
+    width: 80%;
+    margin: auto;
+    
+}
+
+form{
+    margin:1%;
+}
+
+fieldset {
+    
+    border:none;
+    padding: 1%;
+}
+
+#login{
+}
+
+#login, #signup{
+    width:100%;
+    border: 1px solid var(--primary-color);
+    border-radius: 10px;
+    display: grid;
+    grid-template-rows: repeat(1fr);
+    
+}
+
+#login fieldset{
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap:5% 2%;
+}
+
+#signup{
+    grid-template-columns: 1fr 1fr;
+    
+}
+
+#signup>fieldset{
+    grid-template-columns: 1fr 1fr;
+    display: grid;
+    border: initial;
+    grid-template-rows: repeat(1fr);
+    gap:1% 10%;
+}
+
+#login input, #signup input {
+    width:50%;
+}
+
+label {
+    color:var(--primary-color);
+    
+    
+}
+
+header {
+    position:static;
+    top:0px;
+    background-color: var(--primary-color);
+    color:white;
+    text-align:center;
+    width:100%;
+    height:15vh;
+    vertical-align:middle;
+}
+
+footer {
+    
+    background-color: var(--primary-color);
+    color: white;
+    text-align:center;
+    width:100%;
+    height:10vh;
+    vertical-align:middle;
+   
+}

@@ -1,0 +1,81 @@
+div{
+    height: 10rem;
+    background-color: lightgray;
+}
+
+.sent, .recieved {
+    width:50%;
+    margin: 1% 0;
+    
+}
+
+.sent {
+    color: var(--primary-color);
+    justify-self: flex-end;
+    
+    border-radius: 20px 20px 0 20px;
+}
+
+.received {
+    justify-self: flex-start;
+    
+    border-radius: 20px 20px 20px 0 ;
+
+    color: red;
+}
+
+li{
+    width:50%;
+    padding: 1%;
+    border: 1px solid black;
+    display: grid;
+    grid-template-rows: 4fr 1fr;
+    align-items: stretch;
+    justify-content: stretch;
+    padding:0;
+}
+
+ul {
+    display: grid;
+    grid-template-rows: 1fr;
+    list-style-type: none;
+    padding-inline:0;
+    width:90%;
+    padding: 0 5%;
+}
+
+div {
+    width: 50%;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+   
+}
+
+div::-webkit-scrollbar{
+    display: none;
+}
+
+sub{
+    color: white;
+    width:96%;
+    margin-bottom: 0;
+    font-size: 0.75rem;
+    margin: 0;
+    padding: 1%;
+    display: inline-block;
+}
+
+.sub_sent{
+    background-color: var(--primary-color);
+    border-radius: 0 0 0px 10px;
+    text-align: right;
+    padding-right: 3%;
+}
+
+.sub_received{
+    background-color: red;
+    border-radius: 0 0 10px 0;
+    text-align: left;
+    padding-left: 3%;
+   
+}

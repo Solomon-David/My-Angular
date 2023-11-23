@@ -1,0 +1,12 @@
+<div>
+   
+
+        <messages-component  [messages]="messages" [user]="user"></messages-component>
+   
+
+    <form class="reply" [formGroup]="myForm" (ngSubmit)="sendMessage()">
+        <input type="text" formControlName="message"  class="body"/>
+        <button class="send" >Send</button>
+    </form>
+
+</div>
