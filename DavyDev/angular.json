@@ -71,7 +71,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "DavyDev:build"
+            "browserTarget": "DavyDev:build"
           }
         },
         "test": {
