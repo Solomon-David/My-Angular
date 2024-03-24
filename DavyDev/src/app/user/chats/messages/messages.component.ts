@@ -12,7 +12,7 @@ interface Message {
     styleUrls: ["./messages.component.css"],
      
 })
-
+ 
 
 
 export class MessagesComponent implements OnChanges {
@@ -31,8 +31,8 @@ export class MessagesComponent implements OnChanges {
                 this.ul.last.nativeElement.scrollIntoView()
             }, 100);
         }
-    }
-
+    } 
+ 
     tracker(index:number, item:any){
         return item.message
       }

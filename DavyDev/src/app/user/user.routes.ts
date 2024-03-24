@@ -4,6 +4,7 @@ import { ChatsComponent } from './chats/chats.component'
 import { NgModule } from '@angular/core'
 import { UserComponent } from './user.component'
 import { TasksComponent } from './tasks/tasks.component'
+import { ProfileComponent } from './profile/profile.component'
 
 const routes: Routes = [
 
@@ -12,6 +13,7 @@ const routes: Routes = [
                     {path:"chats", data:{title:" Chats"}, component: ChatsComponent},
                      {path:"home", data:{title:" Home"}, component:HomeComponent},
                      {path:"tasks", data:{title:" Tasks"}, component:TasksComponent},
+                     {path:"profile", data:{title:" Profile"}, component:ProfileComponent},
                      {path:"", redirectTo:"home", pathMatch:"full"}
                     //{path:"user", component:UserComponent}
             ]

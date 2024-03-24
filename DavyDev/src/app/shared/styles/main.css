@@ -77,11 +77,15 @@ tr {
 
 input[type=submit] {
     border: 1px solid var(--primary-color);
-    color: var(--primary-color);
-    background-color: lightgray;
+    background-color: var(--primary-color);
+    color: white;
     width:auto;
     margin: 5% auto;
-    
+}
+
+input[type=submit]:disabled{
+    color: var(--primary-color);
+    background-color: lightgray;
 }
 
 .activeButton {
@@ -90,21 +94,23 @@ input[type=submit] {
     width:50%;
     display: inline;
     position: relative;
-    background-color: transparent;
+    background-color: var(--primary-color);
+    transition: background-color 1s;
 }
 
 .button {
     position: relative;
     color:  var(--primary-color);
-    background-color: transparent;
+    background-color: white;
     width:50%;
     display: inline;
+    transition: background-color 1s;
 }
 
-.activeButton::before{
+/* .activeButton::before{
     --width:100%;
     content:" ";
-    /* left:calc(100%-var(--width)); */
+    /* left:calc(100%-var(--width)); 
     left:0;
     position: absolute;
     width: var(--width);
@@ -124,7 +130,7 @@ input[type=submit] {
     background-color: var(--primary-color);
     transition: width 1s;
     z-index: -1;
-}
+} */
 
 #buttons{
     margin: 1% 25%;

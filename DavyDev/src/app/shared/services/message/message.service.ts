@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable,signal } from '@angular/core';
 import { of, Observable, ReplaySubject } from 'rxjs';
 import {io} from "socket.io-client";
 
@@ -16,6 +16,7 @@ interface Message {
 export class MessageService {
 
   public message$ : ReplaySubject<Message> = new ReplaySubject(1);
+  public count = signal<number>(0);
   // public message$: Message[]=[]
   id: string = "Unknown"
  
@@ -34,6 +35,7 @@ socket = io("http://localhost:8080/");
   public getMessage(){
     this.socket.on("message", (message:Message)=>{
       this.message$.next(message);
+      this.count.update((current:number) => current++)
     })
     return (this.message$.asObservable());
   }

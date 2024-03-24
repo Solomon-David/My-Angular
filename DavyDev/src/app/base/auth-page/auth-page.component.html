@@ -5,8 +5,10 @@
     <div>
 
         <div id="buttons">
+            <!-- <button (click)="toLogin()" >Login</button>
+            <button (click)="toSignUp()" >Sign Up</button> -->
             <button (click)="toLogin()" [switchclass]="login" truthy="activeButton" falsy="button" >Login</button>
-            <button (click)="toSignUp()"  [switchclass]="!login" truthy="activeButton" falsy="button">Sign Up</button>
+            <button (click)="toSignUp()" [switchclass]="!login" truthy="activeButton" falsy="button">Sign Up</button>
 
         </div>
         
@@ -15,16 +17,26 @@
            <fieldset >
                <label>Username:</label>
                
-               <input name='username' formControlName="username" />
+               <input name='username' (keyup)="checkValid()" formControlName="username" />
             </fieldset>
                    
                 <fieldset>
                     <label>Password:</label>
                     
-                    <input type="password" name='password' formControlName="password"/>
+                    <input type="password" (keyup)="checkValid()" name='password' formControlName="password"/>
                 </fieldset>    
-                
-        <input type="submit">
+            
+            @if(!loading()){
+                @if(valid()!="valid"){
+                    <input type="submit" disabled [value]="valid()"/>
+                }
+                @else {
+                    <input type="submit" value="Login"/>
+                }
+            }
+            @else{
+                <input type="submit" disabled value="Loading..."/>
+            }
         </form>
         <ng-template #signup>
             <form [formGroup]="userSignUp" (ngSubmit)="SignUpUser()" id="signup">
@@ -67,7 +79,7 @@
             </form>
         </ng-template>
          
-
+        
         <pre>{{message}}</pre>
     </div>
 

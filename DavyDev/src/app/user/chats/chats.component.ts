@@ -1,8 +1,8 @@
-import { Component, OnInit, OnChanges, SimpleChanges} from '@angular/core';
+import { Component, OnInit, OnDestroy, OnChanges, SimpleChanges, signal, AfterContentChecked, effect} from '@angular/core';
 import {FormControl,FormGroup} from "@angular/forms"
 import { PersonService } from 'src/app/shared/services/person/person.service';
 import { MessageService } from 'src/app/shared/services/message/message.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 
 
@@ -18,17 +18,22 @@ interface Message {
 })
 
 
-export class ChatsComponent implements OnInit,OnChanges{
+export class ChatsComponent implements OnInit, OnDestroy{
   myForm = new FormGroup ({message:new FormControl("")})
   user: any={}
   newMessage: string="";
-  messages: Message[] = [];
-  messagess=new BehaviorSubject(this.messages)
-    
+  // messages: Message[] = [];
+  // messagess=new BehaviorSubject(this.messages)
+  messages=signal<Message[]>([])
+  messagesSub: Subscription
             
 
   constructor(private person: PersonService,
-    private message: MessageService){}
+    private message: MessageService){
+      effect(()=>{
+        console.log(this.messages())
+      })
+    }
 
   sendMessage(){
     this.message.sendMessage(this.myForm.value.message);
@@ -36,26 +41,28 @@ export class ChatsComponent implements OnInit,OnChanges{
   }
 
   getMessages():void{
-    this.message.getMessage().subscribe((message:any) =>{
-      console.log(message)
-      this.messages.push(message);
-      this.messages=[...this.messages]
-      this.messagess.next(this.messages)
-      // console.log(this.messages)
-    })
+    
   }
 
   ngOnInit(): void {
     console.log("Initialized")
     this.user=this.person.getData()
-    this.getMessages()
+    console.log(this.messages)
+    // this.getMessages()
+    this.messagesSub = this.message.getMessage().subscribe((message:any) =>{
+      console.log(message)
+      // this.messages.push(message);
+      // this.messages=[...this.messages]
+      // this.messagess.next(this.messages)
+      this.messages.update(arr => [...arr, message])
+      // console.log(this.messages)
+    }, )
   }
+  
+ 
 
-  ngOnChanges(changes: SimpleChanges): void {
-
-    console.log("changed")
-    console.log(changes)
-    this.getMessages()
+  ngOnDestroy(): void {
+    this.messagesSub.unsubscribe()
   }
 
  

@@ -1,7 +1,7 @@
 <div>
    
 
-        <messages-component  [messages]="messages" [user]="user"></messages-component>
+        <messages-component  [messages]="messages()" [user]="user"></messages-component>
    
 
     <form class="reply" [formGroup]="myForm" (ngSubmit)="sendMessage()">

@@ -1,7 +1,8 @@
 <div >
     <!-- <cdk-virtual-scroll-viewport style="height: 200px;" [itemSize]="2"> -->
+            <ul id="messages">
+                @for(message of messages; track message.message){
             <!-- <ul id="messages"  *ngFor="let message of messages;trackBy: tracker;"> -->
-            <ul id="messages"  *ngFor="let message of messages;trackBy: tracker;">
                 
                 <li #list class="message" [switchclass]='message.sender===user.fname+" "+user.lname' 
                 truthy="sent" falsy="received" >
@@ -13,7 +14,7 @@
                      >{{message.sender |sender:user.fname+" "+user.lname}}</sub>
                     <!-- <p>{{message}}</p> -->
                 </li>
-                
+            }
             </ul>
         <!-- </cdk-virtual-scroll-viewport> -->
 </div>
