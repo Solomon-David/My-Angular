@@ -1,44 +1,60 @@
-const {Schema,model} = require('mongoose')
-const crypto = require("crypto")
+const { Schema, model } = require('mongoose')
+const jwt = require('jsonwebtoken')
+const validator = require('validator')
+const bcrypt = require("bcryptjs")
 
 const User = new Schema({
     firstname: {
         type: String,
-        required : true
+        required: true
     },
-    lastname : {
-        type : String,
-        required : true
-    },
-    username : {
+    lastname: {
         type: String,
         required: true
     },
-    password: {
-        type : String,
-        required : true,
-        min: 6,
-        max : 20
+    username: {
+        type: String,
+        required: true,
+        unique: true
     },
-    email : {
-        type : String,
-        required : true,
-        validator(value){
+    password: {
+        type: String,
+        required: true,
+        minlength: 6,
 
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+        validate(value) {
+            if (!validator.isEmail(value)) {
+                throw new Error('Email is not valid')
+            }
         }
     }
 },
-{timestamps: true})
+    { timestamps: true })
 
-User.pre('save', async function(next){
-    try{
-    const user = this
-    user.password = crypto.createHash(user.password, 8)
-    next()
+User.pre('save', async function (next) {
+    try {
+        const user = this
+        if (user.isModified('password')) {
+            user.password = await bcrypt.hash(user.password, 8)
+        }
+        next()
     }
-    catch(err){
+    catch (err) {
         console.log(err)
     }
 })
+User.methods.createJwt = function () {
+    return jwt.sign({ userId: this._id, username: this.username }, process.env.SECRET_PHASE, { expiresIn: process.env.LIFE_TIME })
 
-module.exports = model('user', User)
+}
+User.methods.comparePassword = async function (canditatePassword) {
+    const isMatch = await bcrypt.compare(canditatePassword, this.password)
+    return isMatch
+}
+
+module.exports = model('User', User)

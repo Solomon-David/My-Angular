@@ -1,41 +1,34 @@
 require('./Model/Mongo')
-const express=require("express")
-const RegisterRouter = require('./Routes/Register')
-const app=express()
-const server=require("http").createServer(app)
-const LoginRouter = require('./Routes/Login')
-const cors=require("cors")
-const socketio=require("socket.io")
-const io = socketio(server, {cors:{origin: "*"}} )
+const Auth = require('./Middleware/Auth')
+require('dotenv').config()
+const express = require("express")
+const DashBoardRouter = require('./Routes/Dashboard')
+const taskRoute = require('./Routes/TaskRoutes')
+const app = express()
+const ChatsRouter = require('./Routes/Chats')
+const server = require("http").createServer(app)
+const AuthenticateRouter = require('./Routes/Authenticate')
 
+// middlewares 
 app.use(express.json())
-app.use(express.urlencoded({extended:true}))
+app.use(express.urlencoded({ extended: true }))
 app.use(express.static('./public'))
 
-app.use('/app',LoginRouter)
-app.use('/app,',RegisterRouter)
-app.use(cors({origin:"http://localhost:4200"}))
+//Routes
 
-app.get("*", (req,res)=>{
-  res.status(400).send("<h2>Error</h2>")
+app.use('/app', AuthenticateRouter)
+app.use('/app', Auth, DashBoardRouter)
+app.use('/app', Auth, taskRoute)
+app.use('/app/home', ChatsRouter)
+
+const PORT = process.env.PORT || 8000;
+app.get("*", (req, res) => {
+  res.status(400).send(`<h2>Error. ${req.originalUrl} route does not exist</h2>`)
 })
 
-server.listen(3000, ()=>{
-    console.log(" server is listening on port 3000")
-}) 
-
-io.on("connection", (socket)=>{
-   
-console.log(`Connection  Established`);
-
-socket.on("message", (message)=>{
-    let resp={message: message.message, sender: message.sender}
-    console.log(resp)
-    io.emit("message", resp)
-});
-
-socket.on("disconnect", ()=>{
-    console.log(`Connection closed`)   
-    })
+// Connecting to a server
+server.listen(8000, () => {
+  console.log(`Server is listening on ${PORT}`)
 })
 
+module.exports = { server }
