@@ -30,5 +30,3 @@ app.get("*", (req, res) => {
 server.listen(8000, () => {
   console.log(`Server is listening on ${PORT}`)
 })
-
-module.exports = { server }

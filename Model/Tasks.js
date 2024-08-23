@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose')
+const { Schema, model, Types } = require('mongoose')
 
 const Taskes = new Schema({
     task: {
@@ -10,6 +10,11 @@ const Taskes = new Schema({
         type: Boolean,
         default: false
     },
+    createdBy: {
+        type: Types.ObjectId,
+        ref: "User",
+        required: [true, "Please provide User"]
+    }
 })
 
 module.exports = model('tasks', Taskes)

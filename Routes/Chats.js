@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const socketio = require('socket.io')
-const { server } = require('../index')
+const server = require("http").createServer(app)
 const cors = require("cors")
 const io = socketio(server, { cors: { origin: "*" } })
 const Routes = new express.Router()

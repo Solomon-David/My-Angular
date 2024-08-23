@@ -2,7 +2,9 @@ const Taskes = require('../Model/Tasks')
 
 const getAllTask = async (req, res) => {
     try {
-        const task = await Taskes.find({})
+        const { userId } = req.user
+        req.body.createdBy = userId
+        const task = await Taskes.find({ createdBy: req.body.createdBy })
         res.status(200).json(task)
     } catch (err) {
         console.log(err)
