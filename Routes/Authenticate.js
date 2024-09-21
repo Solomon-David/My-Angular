@@ -21,8 +21,12 @@ Router.post("/login", async function (req, res) {
     // Assigning token to users
     const token = await user.createJwt()
 
-    // Send response after all checks are complete
-
+    // stores the token in a cookie
+    res.cookie('authorizeuser', token, {
+      maxAge: 3600000,
+      httpOnly: true,
+    })
+    // Send response after all checks are complete and store jwt in cookies
     res.status(200).send({ token })
 
   } catch (err) {
@@ -52,6 +56,11 @@ Router.post("/register", async function (req, res) {
     await newUser.save()
     const token = newUser.createJwt()
 
+    res.cookie('authorizeuser', token, {
+      httpOnly: true,
+      expires: new Date(Date.now() + 90000)
+
+    })
     res.status(200).json({ token })
 
   } catch (err) {

@@ -5,27 +5,46 @@ const express = require("express")
 const DashBoardRouter = require('./Routes/Dashboard')
 const taskRoute = require('./Routes/TaskRoutes')
 const app = express()
-const ChatsRouter = require('./Routes/Chats')
-const server = require("http").createServer(app)
+const PostRoutes = require("./Routes/PostRoutes")
 const AuthenticateRouter = require('./Routes/Authenticate')
+const { chatfunction, Routes: chatRoutes } = require('./Routes/Chats')
+const server = require("http").createServer(app)
+const socketIo = require('socket.io')
+const cors = require('cors')
+const io = socketIo(server, { cors: { origin: "*" } })
+const cookieparser = require('cookie-parser')
 
+// Temporary modules
+const User = require("./Model/User")
+
+// Using Sockets 
+chatfunction(io)
 // middlewares 
+app.use(cors({ origin: "*" }))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(cookieparser())
 app.use(express.static('./public'))
 
 //Routes
 
 app.use('/app', AuthenticateRouter)
+app.use('/app', Auth, chatRoutes)
+app.use('app', PostRoutes)
 app.use('/app', Auth, DashBoardRouter)
 app.use('/app', Auth, taskRoute)
-app.use('/app/home', ChatsRouter)
+
 
 const PORT = process.env.PORT || 8000;
+
+app.get("/user", async (req, res) => {
+  const userspresent = await User.countDocuments();
+  res.status(200).json({ userspresent })
+})
+
 app.get("*", (req, res) => {
   res.status(400).send(`<h2>Error. ${req.originalUrl} route does not exist</h2>`)
 })
-
 // Connecting to a server
 server.listen(8000, () => {
   console.log(`Server is listening on ${PORT}`)

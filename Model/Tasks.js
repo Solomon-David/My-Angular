@@ -13,8 +13,8 @@ const Taskes = new Schema({
     createdBy: {
         type: Types.ObjectId,
         ref: "User",
-        required: [true, "Please provide User"]
+        required: [true, "Please provide usercreatedBy"]
     }
-})
+}, { timestamps: true })
 
 module.exports = model('tasks', Taskes)

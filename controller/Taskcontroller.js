@@ -1,20 +1,19 @@
 const Taskes = require('../Model/Tasks')
 
 const getAllTask = async (req, res) => {
+    const { userId } = req.user
     try {
-        const { userId } = req.user
-        req.body.createdBy = userId
-        const task = await Taskes.find({ createdBy: req.body.createdBy })
-        res.status(200).json(task)
+        const task = await Taskes.find({ createdBy: userId })
+        res.status(200).json({ task })
     } catch (err) {
-        console.log(err)
-        res.status(500).json({ msg: err })
+        res.status(400).json(err)
     }
 }
 const addTask = async (req, res) => {
     try {
+        const { userId } = req.user;
+        req.body.createdBy = userId;
         const newTask = await Taskes.create(req.body)
-
         res.status(201).json(newTask)
     } catch (err) {
         console.log(err)
@@ -24,7 +23,9 @@ const addTask = async (req, res) => {
 const getTask = async (req, res) => {
     try {
         const { id: TaskID } = req.params
-        const task = await Taskes.findOne({ _id: TaskID })
+        const { userId } = req.user
+        req.body.createdBy = userId
+        const task = await Taskes.findOne({ _id: TaskID, createdBy: req.body.createdBy })
         if (!task) {
             return res.status(404).json({ msg: ` no id with the ${TaskID}` })
         }

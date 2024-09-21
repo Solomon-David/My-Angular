@@ -34,7 +34,7 @@ const User = new Schema({
         }
     }
 },
-    { timestamps: true })
+)
 
 User.pre('save', async function (next) {
     try {

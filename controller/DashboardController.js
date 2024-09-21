@@ -1,8 +1,8 @@
 const User = require('../Model/User')
 const getUserData = async (req, res) => {
     // Get data regarding user that logged in
-    const { username, userId } = req.user
-    const getdata = await User.findOne({ _id: userId })
+    const { userId } = req.user
+    const getdata = await User.findOne({ _id: userId }).select("-password")
     res.status(200).json({ getdata })
 }
 
@@ -28,7 +28,7 @@ const updateUserData = async (req, res) => {
 }
 const changePassword = async (req, res) => {
     const { newpassword, oldpassword } = req.body
-    if (!(newpassword && oldpassword)) {
+    if (!newpassword || !oldpassword) {
         return res.status(401).send('please provide both values')
     }
     const user = await User.findOne({ _id: req.user.userId })
