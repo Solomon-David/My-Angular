@@ -1,39 +1,51 @@
 require('./Model/Mongo')
-const express=require("express")
-const app=express()
-const server=require("http").createServer(app)
-const LoginRouter = require('./Routes/Login')
-const cors=require("cors")
-const socketio=require("socket.io")
-const io = socketio(server, {cors:{origin: "*"}} )
+const Auth = require('./Middleware/Auth')
+require('dotenv').config()
+const express = require("express")
+const DashBoardRouter = require('./Routes/Dashboard')
+const taskRoute = require('./Routes/TaskRoutes')
+const app = express()
+const PostRoutes = require("./Routes/PostRoutes")
+const AuthenticateRouter = require('./Routes/Authenticate')
+const { chatfunction, Routes: chatRoutes } = require('./Routes/Chats')
+const server = require("http").createServer(app)
+const socketIo = require('socket.io')
+const cors = require('cors')
+const io = socketIo(server, { cors: { origin: "*" } })
+const cookieparser = require('cookie-parser')
 
+// Temporary modules
+const User = require("./Model/User")
+
+// Using Sockets 
+chatfunction(io)
+// middlewares 
+app.use(cors({ origin: "*" }))
 app.use(express.json())
-app.use(express.urlencoded({extended:true}))
+app.use(express.urlencoded({ extended: true }))
+app.use(cookieparser())
 app.use(express.static('./public'))
 
-app.use('/app',LoginRouter)
-app.use(cors({origin:"http://localhost:4200"}))
+//Routes
 
-app.get("*", (req,res)=>{
-  res.status(400).send("<h2>Error</h2>")
+app.use('/app', AuthenticateRouter)
+app.use('/app', Auth, chatRoutes)
+app.use('app', PostRoutes)
+app.use('/app', Auth, DashBoardRouter)
+app.use('/app', Auth, taskRoute)
+
+
+const PORT = process.env.PORT || 8000;
+
+app.get("/user", async (req, res) => {
+  const userspresent = await User.countDocuments();
+  res.status(200).json({ userspresent })
 })
 
-server.listen(3000, ()=>{
-    console.log(" server is listening on port 3000")
-}) 
-
-io.on("connection", (socket)=>{
-   
-console.log(`Connection  Established`);
-
-socket.on("message", (message)=>{
-    let resp={message: message.message, sender: message.sender}
-    console.log(resp)
-    io.emit("message", resp)
-});
-
-socket.on("disconnect", ()=>{
-    console.log(`Connectiion closed`)   
-    })
+app.get("*", (req, res) => {
+  res.status(400).send(`<h2>Error. ${req.originalUrl} route does not exist</h2>`)
 })
-
+// Connecting to a server
+server.listen(8000, () => {
+  console.log(`Server is listening on ${PORT}`)
+})
