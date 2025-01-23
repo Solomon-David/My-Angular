@@ -5,14 +5,64 @@ const post = new Schema({
         type: String,
         required: true
     },
-    createdBy: {
+    author: {
         type: Types.ObjectId,
-        required: [true, "Please who posted this"]
+        ref: "User",
+        required: [true, "Please have an author for this?"]
     },
-    comment: [{
-        type: String
+    updatedAt: {
+        type: Date,
+        default: Date.now
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    likes: {
+        type: Number,
+        default: 0
+    },
+    likedBy: [{
+        type: Types.ObjectId,
+        ref: "User",
+    }],
+    comments: [{
+        type: Types.ObjectId,
+        ref: "comments"
     }]
-}, { timestamps: true })
+})
 
+const comments = new Schema({
+    content: {
+        type: String,
+        required: true
+    },
+    author: {
+        type: Types.ObjectId,
+        ref: "User",
+        required: true
+    },
+    post: {
+        type: Types.ObjectId,
+        ref: "post"
+    },
+    replies: {
+        type: String
+    },
+    likes: {
+        type: Number,
+        default: 0
+    }
+})
 
-module.exports = model('Post', post)
+post.pre('save', function (next) {
+    this.updatedAt = Date.now
+    next()
+})
+const commentModel = model('comments', comments)
+const postModel = model('Posts', post)
+
+module.exports = {
+    postModel,
+    commentModel
+}

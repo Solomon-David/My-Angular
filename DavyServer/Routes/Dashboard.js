@@ -1,11 +1,11 @@
-const express = require('express')
+const express = require('express');
 const router = express.Router()
 const { getUserData, updateUserData, changePassword } = require('../controller/DashboardController')
-const uploads = require('../Middleware/upload')
+const { uploads, uploadError } = require('../Middleware/upload')
 
 
 router.route('/dashboard').get(getUserData)
-router.route('/updateuser').patch(uploads.single('avatar'), updateUserData)
+router.route('/updateuser').patch(uploads.single('profilephoto'), uploadError, updateUserData)
 router.route('/changepassword').patch(changePassword)
 
-module.exports = router;
+module.exports = router; 

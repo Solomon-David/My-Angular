@@ -1,16 +1,61 @@
-const multer = require('multer')
+const multer = require('multer');
+const fs = require('fs');
+const path = require('path');
+
+// Function to dynamically create directory if it doesn't exist
+const createFolderIfNotExists = (folderPath) => {
+    if (!fs.existsSync(folderPath)) {
+        fs.mkdirSync(folderPath, { recursive: true });
+    }
+};
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, `/profilePictures`)
+        const uploadFolder = `./uploads/profilephotos`;
+        createFolderIfNotExists(uploadFolder);
+        cb(null, uploadFolder);
     },
+
     filename: (req, file, cb) => {
-        cb(null, file.fieldname + "-" + Date.now() + file.filename)
+        // Add timestamp and original file extension for uniqueness
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        const extension = path.extname(file.originalname);
+        cb(null, file.fieldname + '-' + uniqueSuffix + extension);
+    },
+});
+
+// File filter to validate file types
+const fileFilter = (req, file, cb) => {
+    const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    if (allowedMimeTypes.includes(file.mimetype)) {
+        cb(null, true);
+    } else {
+        cb(new Error('Invalid file type. Only JPEG, PNG, and GIF are allowed.'), false);
     }
-})
-const upload = multer({
+};
+
+// Limit file size to 5MB
+const uploads = multer({
     storage: storage,
-})
+    limits: {
+        fileSize: 5 * 1024 * 1024, // 5MB
+    },
+    fileFilter: fileFilter,
+});
 
+// Middleware to handle errors
+const uploadError = (req, res, next) => {
+    uploads.single('profilePhoto')(req, res, (err) => {
+        if (err) {
+            if (err instanceof multer.MulterError) {
+                // Handle multer-specific errors
+                return res.status(400).json({ error: err.message });
+            }
+            // Handle custom errors
+            return res.status(400).json({ error: err.message });
+        }
+        next();
+    });
+};
 
-module.exports = upload
+module.exports = { uploads, uploadError };

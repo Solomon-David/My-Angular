@@ -8,23 +8,28 @@ const getUserData = async (req, res) => {
 
 const updateUserData = async (req, res) => {
     try {
-        const { username, email, firstname, lastname } = req.body
-
+        const { username, email, firstname, lastname } = req.body;
         if (!(username && email && firstname && lastname)) {
             res.status(400).json({ msg: 'input all field' })
         }
+        console.log(req.file)
         const user = await User.findOne({ _id: req.user.userId })
+
         user.lastname = lastname
         user.firstname = firstname
         user.email = email
         user.username = username
 
         await User.save()
+
+        res.status(201).json({
+            filename: req.file.filename,
+            mimetype: req.file.mimetype
+        })
     } catch (err) {
         console.log(err)
     }
 
-    res.status()
 }
 const changePassword = async (req, res) => {
     const { newpassword, oldpassword } = req.body

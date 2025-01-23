@@ -13,9 +13,11 @@ const socketIo = require('socket.io')
 const cors = require('cors')
 const io = socketIo(server, { cors: { origin: "*" } })
 const cookieparser = require('cookie-parser')
+const errorMiddleware = require('./error/errorHandler')
 
 // Temporary modules
 const User = require("./Model/User")
+const post = require('./Model/post')
 
 // Using Sockets 
 chatfunction(io)
@@ -25,12 +27,14 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieparser())
 app.use(express.static('./public'))
+app.use(errorMiddleware)
+
 
 //Routes
 
 app.use('/app', AuthenticateRouter)
 app.use('/app', Auth, chatRoutes)
-app.use('app', PostRoutes)
+app.use('/app', Auth, PostRoutes)
 app.use('/app', Auth, DashBoardRouter)
 app.use('/app', Auth, taskRoute)
 
@@ -39,6 +43,7 @@ const PORT = process.env.PORT || 8000;
 
 app.get("/user", async (req, res) => {
   const userspresent = await User.countDocuments();
+  await post.deleteMany();
   res.status(200).json({ userspresent })
 })
 
